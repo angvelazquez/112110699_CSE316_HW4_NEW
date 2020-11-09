@@ -56,7 +56,7 @@ function writeSearch(req, res) {
   let sql = "SELECT * FROM courses;";
 
   // sql to search all columns
-  if (filter === "allFields")
+  if (filter == "allFields")
     sql = "SELECT * FROM courses WHERE Subject LIKE '%" 
     + search + "%' OR Courses LIKE '%"
     + search + "%' OR CourseName LIKE '%" 
@@ -75,14 +75,14 @@ function writeSearch(req, res) {
     + search + "%' OR ComboDescr LIKE '%" 
     + search + "%' OR ComboEnrollCap LIKE '%"+ search + "%';";
   else if (filter === "courseNum")
-    sql = "SELECT * FROM courses WHERE Course LIKE '%" + search + "%';";
+    sql = "SELECT * FROM courses WHERE Courses LIKE '%" + search + "%';";
   else if (filter === "courseName")
     sql = "SELECT * FROM courses WHERE CourseName LIKE '%" + search + "%';";
   else if (filter === "instructor")
     sql = "SELECT * FROM courses WHERE Instructor LIKE '%" + search + "%';";
   else if (filter === "day")
     sql =
-      "SELECT * FROM courses WHERE Days LIKE '%" + search + "%' ORDER BY StartTime";
+      "SELECT * FROM courses WHERE Days LIKE '%" + search + "%' ORDER BY StartMTime";
   else if (filter == "time")
     sql = "SELECT * FROM courses WHERE StartTime LIKE '%" + search + "%' OR EndTime LIKE '%" + search + "%';";
 
@@ -172,7 +172,7 @@ function writeSchedule(req, res) {
             html = html.replace("<td> Thu </td>", getDay(result, "THU"));
             con.query(constructSQLDayCommand("F"), function (err, result) {
               if (err) throw err;
-              html = html.replace("<td> Fri <td>", getDay(result, "FRI"));
+              html = html.replace("<td> Fri </td>", getDay(result, "FRI"));
               res.write(html + "\n\n</body>\n</html>");
               res.end();
             });
@@ -200,7 +200,7 @@ function getDay(SQLResult, tableHeader) {
 
 function constructSQLDayCommand(search) {
   var sql = `SELECT * FROM schedule 
-              WHERE Days LIKE '%` + search + `%' 
-              ORDER BY StartTime;`;
+              WHERE Days LIKE '%` + search + `%'
+              ORDER BY StartMTime;`;
   return sql;
 }
